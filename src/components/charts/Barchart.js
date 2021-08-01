@@ -6,21 +6,24 @@ const width = 600;
 const height = 600;
 
 const BarChart = ({ data }) => {
+	console.log([...data.keys()]);
+	console.log([...data.values()]);
+	let A = data.values();
+	console.log(A);
 	const ref = useD3(
 		(svg) => {
 			const margin = { top: 20, right: 10, bottom: 20, left: 10 };
 
 			const y = d3
 				.scaleLinear()
-				//.domain([0, d3.max(data, (d) => d.DidMedal)])
-				.domain([0, Math.max(...data.values())])
-				.rangeRound([height - margin.bottom, margin.top]);
+				.range([height - margin.bottom, margin.top])
+				.domain([0, Math.max(...data.values())]);
 
 			const x = d3
 				.scaleBand()
-				//.domain(data.map((d) => d.Team))
-				.domain(data)
-				.rangeRound([margin.left, width - margin.right]);
+				.rangeRound([margin.left, width - margin.right])
+				.domain([...data.keys()])
+				.padding(0.2);
 
 			const yAxis = (g) => {
 				g.attr('transform', `translate(${margin.left}, 0)`)
@@ -35,7 +38,8 @@ const BarChart = ({ data }) => {
 							.attr('y', 10)
 							.attr('fill', 'currentColor')
 							.attr('text-anchor', 'start')
-							.text(data.DidMedal)
+							//.text(data.DidMedal)
+							.text('Olympics')
 					);
 			};
 
@@ -61,13 +65,15 @@ const BarChart = ({ data }) => {
 			svg.select('.plot-area')
 				.attr('fill', 'blue')
 				.selectAll('.bar')
-				.data(data)
+				.data([...data.values()])
 				.join('rect')
 				.attr('class', 'bar')
-				.attr('x', (d) => x(d.Team))
+				.attr('x', (d, i) => {
+					return x([...data.keys()][i]);
+				})
 				.attr('width', x.bandwidth())
-				.attr('y', (d) => y(d.DidMedal))
-				.attr('height', (d) => y(0) - y(d.DidMedal));
+				.attr('y', (d, i) => y(data[i]))
+				.attr('height', (d, i) => y(0) - y(d));
 		},
 		[data.size]
 	);
