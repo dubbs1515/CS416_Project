@@ -6,7 +6,6 @@ const width = 600;
 const height = 600;
 
 const BarChart = ({ data }) => {
-	console.log(d3.mean(data.Age));
 	data = data.slice(1, 10);
 	const ref = useD3(
 		(svg) => {

@@ -7,10 +7,18 @@ import BarChart from '../charts/Barchart';
 const Olympics = () => {
 	// Initialize Context
 	const olympicContext = useContext(OlympicContext);
-	const { olympicsAll, loading, getOlympicsAll } = olympicContext;
+
+	const {
+		olympicsAll,
+		loading,
+		getOlympicsAll,
+		getOlympicsByYearRange,
+		olympicsFiltered,
+	} = olympicContext;
 
 	useEffect(() => {
 		getOlympicsAll();
+		getOlympicsByYearRange([2004, 2016]);
 		//createChart();
 		//eslint-disable-next-line
 	}, []);
