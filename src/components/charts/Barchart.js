@@ -11,7 +11,7 @@ const BarChart = ({ data }) => {
 	console.log(Math.max(...data.values()));
 	const ref = useD3(
 		(svg) => {
-			const margin = { top: 20, right: 10, bottom: 20, left: 10 };
+			const margin = { top: 20, right: 10, bottom: 200, left: 30 };
 
 			const x = d3
 				.scaleBand()
@@ -25,53 +25,52 @@ const BarChart = ({ data }) => {
 				.range([height - margin.bottom, margin.top]);
 
 			const xAxis = (g) => {
-				// g.attr(
-				// 	'transform',
-				// 	`translate(0, ${height - margin.bottom})`
-				// ).call(
-				// 	d3
-				// 		.axisBottom(x)
-				// 		.tickValues(
-				// 			d3
-				// 				.ticks(...d3.extent(x.domain()), width / 40)
-				// 				.filter((v) => x(v) !== undefined)
-				// 		)
-				// 		.tickSizeOuter(0)
-				// );
+				g.attr(
+					'transform',
+					`translate(0, ${height - margin.bottom})`
+				).call(d3.axisBottom(x));
 			};
 
 			const yAxis = (g) => {
-				// g.attr('transform', `translate(${margin.left}, 0)`)
-				// 	.style('color', 'blue')
-				// 	.call(d3.axisLeft(y).ticks(null, 's'))
-				// 	.call((g) => g.select('.domain').remove())
-				// 	.call((g) =>
-				// 		g
-				// 			.append('text')
-				// 			.attr('x', -margin.left)
-				// 			.attr('y', 10)
-				// 			.attr('fill', 'currentColor')
-				// 			.attr('text-anchor', 'start')
-				// 			.text(data.y)
-				// 	);
+				g.attr('transform', `translate(${margin.left}, 0)`)
+					.style('color', 'black')
+					.call(d3.axisLeft(y).ticks(null))
+
+					.call((g) => g.select('.domain').remove())
+					.call((g) =>
+						g
+							.append('text')
+							.attr('x', -margin.left)
+							.attr('y', 10)
+							.attr('fill', 'currentColor')
+							.attr('text-anchor', 'start')
+							.text(data.y)
+					);
 			};
 
-			svg.select('.x-axis').call(xAxis);
+			svg.select('.x-axis')
+				.call(xAxis)
+				.selectAll('text')
+				.attr('dx', '-2em')
+				.attr('transform', 'rotate(270)')
+				.style('text-anchor', 'end');
+
 			svg.select('.y-axis').call(yAxis);
 
 			svg.select('.plot-area')
-				.attr('fill', 'blue')
 				.selectAll('.bar')
-				// .data([...data.values()])
 				.data(data)
+				.attr('fill', (d) => {
+					return d3.interpolateCool(d[1] / 1000.0);
+				})
 				.join('rect')
 				.attr('class', 'bar')
-				.attr('x', (d, i) => {
-					return x([...data.keys()][i]);
+				.attr('x', (d) => {
+					return x(d[0]);
 				})
 				.attr('width', x.bandwidth())
-				.attr('y', (d, i) => y(d[1]))
-				.attr('height', (d, i) => {
+				.attr('y', (d) => y(d[1]))
+				.attr('height', (d) => {
 					console.log(d[1]);
 					return y(0) - y(d[1]);
 				});
