@@ -7,6 +7,7 @@ import {
 	GET_OLYMPICS_BY_YEAR,
 	GET_OLYMPICS_BY_TEAM,
 	CLEAR_OLYMPICS_FILTERED,
+	GET_TEAM_MEDAL_ROLLUP,
 } from '../types';
 
 const OlympicState = (props) => {
@@ -15,6 +16,8 @@ const OlympicState = (props) => {
 		yearsAll: null,
 		olympicsFiltered: null,
 		loading: true,
+		teamResults: null,
+		teamMedalRollup: null,
 	};
 
 	const [state, dispatch] = useReducer(OlympicReducer, initialState);
@@ -29,23 +32,32 @@ const OlympicState = (props) => {
 	};
 
 	const getOlympicsByYearRange = async (range) => {
-		console.log('1');
 		if (state.olympicsAll == null) {
-			console.log('2');
 			await getOlympicsAll();
 		}
 
 		dispatch({ type: GET_OLYMPICS_BY_YEAR, payload: range });
-		console.log('3');
 	};
 
-	const getOlympicsByTeams = async (beginYear, endYear) => {
-		if (state.olympicsAll !== null) {
-			dispatch({
-				type: GET_OLYMPICS_BY_TEAM,
-				payload: state.olympicsAll,
-			});
+	const getOlypmicsGroupedByTeams = async () => {
+		if (state.olympicsAll == null) {
+			await getOlympicsAll();
 		}
+
+		dispatch({
+			type: GET_OLYMPICS_BY_TEAM,
+		});
+	};
+
+	const getTeamMedalRollup = async () => {
+		if (state.olympicsAll == null) {
+			await getOlympicsAll();
+		}
+		state.loading = true;
+		console.log('hi there');
+		dispatch({
+			type: GET_TEAM_MEDAL_ROLLUP,
+		});
 	};
 
 	const clearOlympicsFiltered = () => {
@@ -58,9 +70,12 @@ const OlympicState = (props) => {
 				olympicsAll: state.olympicsAll,
 				loading: state.loading,
 				olympicsFiltered: state.olympicsFiltered,
+				teamResults: state.teamResults,
+				teamMedalRollup: state.teamMedalRollup,
 				getOlympicsAll,
 				getOlympicsByYearRange,
-				getOlympicsByTeams,
+				getOlypmicsGroupedByTeams,
+				getTeamMedalRollup,
 			}}
 		>
 			{props.children}

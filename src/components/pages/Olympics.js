@@ -7,19 +7,30 @@ import BarChart from '../charts/Barchart';
 const Olympics = () => {
 	// Initialize Context
 	const olympicContext = useContext(OlympicContext);
-
 	const {
 		olympicsAll,
 		loading,
 		getOlympicsAll,
 		getOlympicsByYearRange,
+		teamResults,
 		olympicsFiltered,
+		teamMedalRollup,
+		getOlypmicsGroupedByTeams,
+		getTeamMedalRollup,
 	} = olympicContext;
 
+	const loadAll = async () => {
+		let res = await getOlympicsAll();
+	};
+
 	useEffect(() => {
-		getOlympicsAll();
+		console.log('loading: ' + loading);
+		if (olympicsAll == null) {
+			loadAll();
+		}
 		getOlympicsByYearRange([2004, 2016]);
-		//createChart();
+		getOlypmicsGroupedByTeams();
+		getTeamMedalRollup();
 		//eslint-disable-next-line
 	}, []);
 
@@ -29,7 +40,7 @@ const Olympics = () => {
 
 	return (
 		<Fragment>
-			{olympicsAll !== null && !loading ? (
+			{teamMedalRollup !== null && !loading ? (
 				<div className='container-fluid'>
 					<div className='row'>
 						<div className='col col-sm-8'>
@@ -44,8 +55,8 @@ const Olympics = () => {
 							<h2>LeftSideBar</h2>
 						</div>
 						<div className='col col-sm-8'>
-							<BarChart data={olympicsAll} />
-							{/* <div id="#olympicChart"></div> */}
+							{console.log(teamMedalRollup)}
+							<BarChart data={teamMedalRollup} />
 						</div>
 						<div className='col col-sm-2' id='#rightSideBar'>
 							<h2>RightSideBar</h2>
@@ -53,7 +64,10 @@ const Olympics = () => {
 					</div>
 				</div>
 			) : (
-				<Spinner />
+				<div style={{}}>
+					<h2>Loading...</h2>
+					<Spinner />
+				</div>
 			)}
 			;
 		</Fragment>

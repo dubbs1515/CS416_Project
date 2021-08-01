@@ -6,19 +6,20 @@ const width = 600;
 const height = 600;
 
 const BarChart = ({ data }) => {
-	data = data.slice(1, 10);
 	const ref = useD3(
 		(svg) => {
 			const margin = { top: 20, right: 10, bottom: 20, left: 10 };
 
 			const y = d3
 				.scaleLinear()
-				.domain([0, d3.max(data, (d) => d3.mean(d.Age))])
+				//.domain([0, d3.max(data, (d) => d.DidMedal)])
+				.domain([0, Math.max(...data.values())])
 				.rangeRound([height - margin.bottom, margin.top]);
 
 			const x = d3
 				.scaleBand()
-				.domain(data.map((d) => d.Year))
+				//.domain(data.map((d) => d.Team))
+				.domain(data)
 				.rangeRound([margin.left, width - margin.right]);
 
 			const yAxis = (g) => {
@@ -34,7 +35,7 @@ const BarChart = ({ data }) => {
 							.attr('y', 10)
 							.attr('fill', 'currentColor')
 							.attr('text-anchor', 'start')
-							.text(data.y)
+							.text(data.DidMedal)
 					);
 			};
 
@@ -63,12 +64,12 @@ const BarChart = ({ data }) => {
 				.data(data)
 				.join('rect')
 				.attr('class', 'bar')
-				.attr('x', (d) => x(d.Year))
+				.attr('x', (d) => x(d.Team))
 				.attr('width', x.bandwidth())
-				.attr('y', (d) => y(d3.mean(d.Age)))
-				.attr('height', (d) => y(0) - y(d3.mean(d.Age)));
+				.attr('y', (d) => y(d.DidMedal))
+				.attr('height', (d) => y(0) - y(d.DidMedal));
 		},
-		[data.length]
+		[data.size]
 	);
 
 	return (

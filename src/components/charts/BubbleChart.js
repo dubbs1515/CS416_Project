@@ -5,6 +5,7 @@ import * as d3 from 'd3';
 const BubbleChart = () => {
 	const ref = useD3();
 	const margin = { top: 20, right: 20, bottom: 20, left: 20 };
+
 	return (
 		<svg
 			ref={ref}

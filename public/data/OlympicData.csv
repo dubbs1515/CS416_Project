@@ -1,4 +1,4 @@
-Sex,Age,Height,Team,NOC,Games,Game Type,Year,Date,Season,City,Sport,Event,Medal,Did Medal
+Sex,Age,Height,Team,NOC,Games,Game Type,Year,Date,Season,City,Sport,Event,Medal,DidMedal
 F,27,163,Norway,NOR,2008 Summer,Summer,2008,2008-01-01T01:00:00Z,Summer,Beijing,Handball,Handball Women's Handball,Gold,1
 M,21,198,Italy,ITA,2016 Summer,Summer,2016,2016-01-01T01:00:00Z,Summer,Rio de Janeiro,Rowing,Rowing Men's Coxless Pairs,Bronze,1
 M,30,194,Spain,ESP,2008 Summer,Summer,2008,2008-01-01T01:00:00Z,Summer,Beijing,Fencing,"Fencing Men's epee, Individual",Bronze,1
