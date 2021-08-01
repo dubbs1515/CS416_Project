@@ -8,55 +8,52 @@ const height = 600;
 const BarChart = ({ data }) => {
 	console.log([...data.keys()]);
 	console.log([...data.values()]);
-	let A = data.values();
-	console.log(A);
+	console.log(Math.max(...data.values()));
 	const ref = useD3(
 		(svg) => {
 			const margin = { top: 20, right: 10, bottom: 20, left: 10 };
 
-			const y = d3
-				.scaleLinear()
-				.range([height - margin.bottom, margin.top])
-				.domain([0, Math.max(...data.values())]);
-
 			const x = d3
 				.scaleBand()
-				.rangeRound([margin.left, width - margin.right])
 				.domain([...data.keys()])
+				.rangeRound([margin.left, width - margin.right])
 				.padding(0.2);
 
-			const yAxis = (g) => {
-				g.attr('transform', `translate(${margin.left}, 0)`)
-					.style('color', 'blue')
-					.call(d3.axisLeft(y).ticks(null, 's'))
-					.call((g) => g.select('.domain').remove())
-
-					.call((g) =>
-						g
-							.append('text')
-							.attr('x', -margin.left)
-							.attr('y', 10)
-							.attr('fill', 'currentColor')
-							.attr('text-anchor', 'start')
-							//.text(data.DidMedal)
-							.text('Olympics')
-					);
-			};
+			const y = d3
+				.scaleLinear([0, Math.max(...data.values())])
+				.domain([0, Math.max(...data.values())])
+				.range([height - margin.bottom, margin.top]);
 
 			const xAxis = (g) => {
-				g.attr(
-					'transform',
-					`translate(0, ${height - margin.bottom})`
-				).call(
-					d3
-						.axisBottom(x)
-						.tickValues(
-							d3
-								.ticks(...d3.extent(x.domain()), width / 40)
-								.filter((v) => x(v) !== undefined)
-						)
-						.tickSizeOuter(0)
-				);
+				// g.attr(
+				// 	'transform',
+				// 	`translate(0, ${height - margin.bottom})`
+				// ).call(
+				// 	d3
+				// 		.axisBottom(x)
+				// 		.tickValues(
+				// 			d3
+				// 				.ticks(...d3.extent(x.domain()), width / 40)
+				// 				.filter((v) => x(v) !== undefined)
+				// 		)
+				// 		.tickSizeOuter(0)
+				// );
+			};
+
+			const yAxis = (g) => {
+				// g.attr('transform', `translate(${margin.left}, 0)`)
+				// 	.style('color', 'blue')
+				// 	.call(d3.axisLeft(y).ticks(null, 's'))
+				// 	.call((g) => g.select('.domain').remove())
+				// 	.call((g) =>
+				// 		g
+				// 			.append('text')
+				// 			.attr('x', -margin.left)
+				// 			.attr('y', 10)
+				// 			.attr('fill', 'currentColor')
+				// 			.attr('text-anchor', 'start')
+				// 			.text(data.y)
+				// 	);
 			};
 
 			svg.select('.x-axis').call(xAxis);
@@ -65,15 +62,19 @@ const BarChart = ({ data }) => {
 			svg.select('.plot-area')
 				.attr('fill', 'blue')
 				.selectAll('.bar')
-				.data([...data.values()])
+				// .data([...data.values()])
+				.data(data)
 				.join('rect')
 				.attr('class', 'bar')
 				.attr('x', (d, i) => {
 					return x([...data.keys()][i]);
 				})
 				.attr('width', x.bandwidth())
-				.attr('y', (d, i) => y(data[i]))
-				.attr('height', (d, i) => y(0) - y(d));
+				.attr('y', (d, i) => y(d[1]))
+				.attr('height', (d, i) => {
+					console.log(d[1]);
+					return y(0) - y(d[1]);
+				});
 		},
 		[data.size]
 	);
