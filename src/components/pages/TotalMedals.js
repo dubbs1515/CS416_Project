@@ -1,24 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import * as d3 from 'd3';
+import React/*, { useState, useEffect }*/ from 'react';
+//import * as d3 from 'd3';
 
 
 const TotalMedals = () => {
-    const [medalData, setMedalData] = useState([])	
+    //const [medalData, setMedalData] = useState([])	
 
-	useEffect(() => {
-		d3.csv('./data/TotalMedals.csv')
-			.then(data => setMedalData(data))
-			.then(console.log(medalData))
-            .then(createChart())
-	}, []);
+	// useEffect(() => {
+	// 	d3.csv('./data/TotalMedals.csv')
+	// 		.then(data => setMedalData(data))
+	// 		.then(console.log(medalData))
+    //         .then(createChart())
+    //         // eslint-disable-next-line
+	// }, []);
     
-    let createChart = () => {
-        const svg = d3
-                .select('#medalChart')
-                .append('svg')
-                .attr("viewBox", `0 0 300 600`)
-        console.log(medalData[0])
-    }
+    // let createChart = () => {
+    //     const svg = d3
+    //             .select('#medalChart')
+    //             .append('svg')
+    //             .attr("viewBox", `0 0 300 600`)
+    //     console.log(medalData[0])
+    // }
 
     return (
         <div>

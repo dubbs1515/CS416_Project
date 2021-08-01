@@ -36,3 +36,8 @@
     transform: rotate(360deg);
   }
 } */
+
+#olympicChart {
+	text-align: center;
+	margin-top: 40px;
+}

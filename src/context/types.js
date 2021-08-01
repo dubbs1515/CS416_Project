@@ -1,0 +1,1 @@
+export const GET_OLYMPICS_ALL = 'GET_OLYMPICS_ALL';
