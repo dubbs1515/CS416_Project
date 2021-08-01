@@ -11,7 +11,7 @@ const BarChart = ({ data }) => {
 		(svg) => {
 			const margin = { top: 20, right: 10, bottom: 20, left: 10 };
 
-			const y1 = d3
+			const y = d3
 				.scaleLinear()
 				.domain([0, d3.max(data, (d) => d3.mean(d.Age))])
 				.rangeRound([height - margin.bottom, margin.top]);
@@ -21,10 +21,10 @@ const BarChart = ({ data }) => {
 				.domain(data.map((d) => d.Year))
 				.rangeRound([margin.left, width - margin.right]);
 
-			const y1Axis = (g) => {
+			const yAxis = (g) => {
 				g.attr('transform', `translate(${margin.left}, 0)`)
 					.style('color', 'blue')
-					.call(d3.axisLeft(y1).ticks(null, 's'))
+					.call(d3.axisLeft(y).ticks(null, 's'))
 					.call((g) => g.select('.domain').remove())
 
 					.call((g) =>
@@ -34,7 +34,7 @@ const BarChart = ({ data }) => {
 							.attr('y', 10)
 							.attr('fill', 'currentColor')
 							.attr('text-anchor', 'start')
-							.text(data.y1)
+							.text(data.y)
 					);
 			};
 
@@ -55,7 +55,7 @@ const BarChart = ({ data }) => {
 			};
 
 			svg.select('.x-axis').call(xAxis);
-			svg.select('.y-axis').call(y1Axis);
+			svg.select('.y-axis').call(yAxis);
 
 			svg.select('.plot-area')
 				.attr('fill', 'blue')
@@ -65,8 +65,8 @@ const BarChart = ({ data }) => {
 				.attr('class', 'bar')
 				.attr('x', (d) => x(d.Year))
 				.attr('width', x.bandwidth())
-				.attr('y', (d) => y1(d3.mean(d.Age)))
-				.attr('height', (d) => y1(0) - y1(d3.mean(d.Age)));
+				.attr('y', (d) => y(d3.mean(d.Age)))
+				.attr('height', (d) => y(0) - y(d3.mean(d.Age)));
 		},
 		[data.length]
 	);
