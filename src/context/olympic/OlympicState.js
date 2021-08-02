@@ -26,6 +26,12 @@ const OlympicState = (props) => {
 
 	const [state, dispatch] = useReducer(OlympicReducer, initialState);
 
+	const getTeamOfInterest = async (tName) => {
+		let toi = state.olympicsAll.filter((obj) => obj.Team == tName);
+		console.log('cat');
+		console.log(toi);
+		return toi;
+	};
 	const getOlympicsAll = async () => {
 		try {
 			let data = await d3.csv('./data/OlympicVisData.csv');
@@ -69,7 +75,7 @@ const OlympicState = (props) => {
 		console.log('hi there');
 		dispatch({
 			type: GET_TEAM_MEDAL_ROLLUP_BY_GENDER,
-			payload: team,
+			payload: await getTeamOfInterest(team),
 		});
 	};
 
@@ -79,7 +85,7 @@ const OlympicState = (props) => {
 		}
 		dispatch({
 			type: GET_TEAM_MEDAL_ROLLUP_BY_YEAR,
-			payload: team,
+			payload: await getTeamOfInterest(team),
 		});
 	};
 

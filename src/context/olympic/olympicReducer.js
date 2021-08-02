@@ -51,9 +51,7 @@ const olympicReducer = (state, action) => {
 			return {
 				...state,
 				teamMedalRollupByGender: d3.rollup(
-					(state.olympicsAll = state.olympicsAll.filter(
-						(obj) => (obj.Team = action.payload)
-					)),
+					action.payload,
 					(v) => d3.sum(v, (d) => parseInt(d.DidMedal)),
 					(d) => d.Team,
 					(d) => d.Sex
@@ -64,9 +62,7 @@ const olympicReducer = (state, action) => {
 			return {
 				...state,
 				teamMedalRollupByYear: d3.rollup(
-					state.olympicsAll.filter(
-						(obj) => (obj.Team = action.payload)
-					),
+					action.payload,
 					(v) => d3.sum(v, (d) => parseInt(d.DidMedal)),
 					(d) => d.Team,
 					(d) => d.Year

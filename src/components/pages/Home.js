@@ -9,7 +9,7 @@ const Home = () => {
 			style={{ margin: '2em auto', textAlign: 'center' }}
 		>
 			<div className='row'>
-				<h1>Who has succeeded the Summer Olympics Lately?</h1>
+				<h1>Who has succeeded in the Summer Olympics Lately?</h1>
 			</div>
 			<div
 				className='row'
