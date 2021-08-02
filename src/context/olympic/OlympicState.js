@@ -28,8 +28,6 @@ const OlympicState = (props) => {
 
 	const getTeamOfInterest = async (tName) => {
 		let toi = state.olympicsAll.filter((obj) => obj.Team == tName);
-		console.log('cat');
-		console.log(toi);
 		return toi;
 	};
 	const getOlympicsAll = async () => {
@@ -72,7 +70,6 @@ const OlympicState = (props) => {
 		if (state.olympicsAll == null) {
 			await getOlympicsAll();
 		}
-		console.log('hi there');
 		dispatch({
 			type: GET_TEAM_MEDAL_ROLLUP_BY_GENDER,
 			payload: await getTeamOfInterest(team),
@@ -109,6 +106,7 @@ const OlympicState = (props) => {
 				getOlypmicsGroupedByTeams,
 				getTeamMedalRollup,
 				getTeamMedalRollupByGender,
+				clearOlympicsFiltered,
 			}}
 		>
 			{props.children}

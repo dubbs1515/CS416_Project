@@ -22,7 +22,6 @@ const Olympics = () => {
 	};
 
 	useEffect(() => {
-		console.log('loading: ' + loading);
 		if (olympicsAll == null) {
 			loadAll();
 		}
@@ -54,7 +53,6 @@ const Olympics = () => {
 							team of interest to drill down further.
 						</div>
 						<div className='col col-sm-8'>
-							{console.log(teamMedalRollup)}
 							<BarChart data={teamMedalRollup} />
 						</div>
 						<div className='col col-sm-2' id='#rightSideBar'></div>

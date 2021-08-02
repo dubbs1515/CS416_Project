@@ -9,12 +9,8 @@ const height = 600;
 const GenderChart = (props) => {
 	let data = props.data;
 	let teamName = [...data.keys()][0];
-	console.log(teamName);
 	let medalData = [...data.values()][0];
-	console.log(medalData);
-	// console.log([...data.keys()]);
-	// console.log([...data.values()]);
-	console.log(Math.max(...medalData.values()));
+
 	const ref = useD3(
 		(svg) => {
 			const margin = { top: 20, right: 10, bottom: 200, left: 30 };
@@ -83,7 +79,6 @@ const GenderChart = (props) => {
 				.attr('width', x.bandwidth())
 				.attr('y', (d) => y(d[1]))
 				.attr('height', (d) => {
-					console.log(d[1]);
 					return y(0) - y(d[1]);
 				})
 				.attr('fill', (d) => {

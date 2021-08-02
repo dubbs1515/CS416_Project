@@ -30,7 +30,8 @@ const olympicReducer = (state, action) => {
 		case CLEAR_OLYMPICS_FILTERED:
 			return {
 				...state,
-				olympicsFiltered: null,
+				teamMedalRollupByGender: null,
+				teamMedalRollupByYear: null,
 			};
 		case GET_OLYMPICS_BY_TEAM:
 			return {

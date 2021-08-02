@@ -9,9 +9,6 @@ const height = 600;
 const BarChart = (props) => {
 	const history = useHistory();
 	let data = props.data;
-	console.log([...data.keys()]);
-	console.log([...data.values()]);
-	console.log(Math.max(...data.values()));
 	const ref = useD3(
 		(svg) => {
 			const margin = { top: 20, right: 10, bottom: 200, left: 30 };
@@ -81,7 +78,6 @@ const BarChart = (props) => {
 				.attr('width', x.bandwidth())
 				.attr('y', (d) => y(d[1]))
 				.attr('height', (d) => {
-					console.log(d[1]);
 					return y(0) - y(d[1]);
 				})
 				.attr('fill', (d) => {
@@ -89,7 +85,6 @@ const BarChart = (props) => {
 				})
 				.attr('#id', data.x)
 				.on('click', (e) => {
-					console.log(e.target.id);
 					history.push(`/drillDown/${e.target.id}`);
 				});
 		},

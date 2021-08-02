@@ -18,6 +18,7 @@ const DrillDown = () => {
 		teamMedalRollupByGender,
 		getTeamMedalRollupByYear,
 		teamMedalRollupByYear,
+		clearOlympicsFiltered,
 	} = olympicContext;
 
 	const loadAll = async () => {
@@ -25,7 +26,6 @@ const DrillDown = () => {
 	};
 
 	useEffect(() => {
-		console.log('loading: ' + loading);
 		if (olympicsAll == null) {
 			loadAll();
 		}
@@ -33,6 +33,10 @@ const DrillDown = () => {
 		getTeamMedalRollupByYear(teamSlug);
 		//eslint-disable-next-line
 	}, []);
+
+	let ClearFiltered = () => {
+		clearOlympicsFiltered();
+	};
 
 	return (
 		<Fragment>
@@ -57,12 +61,10 @@ const DrillDown = () => {
 						</div>
 						<div className='col col-sm-5'>
 							<h3>Medals Earned by Gender</h3>
-							{console.log(teamMedalRollupByGender)}
 							<GenderChart data={teamMedalRollupByGender} />
 						</div>
 						<div className='col col-sm-5'>
 							<h3>Medals Earned by Year of Olympiad</h3>
-							{console.log(teamMedalRollupByGender)}
 							<YearChart data={teamMedalRollupByYear} />
 						</div>
 					</div>
@@ -70,7 +72,11 @@ const DrillDown = () => {
 						<div
 							style={{ margin: '2em auto', textAlign: 'center' }}
 						>
-							<Button className='btn' href='/Olympics'>
+							<Button
+								className='btn'
+								href='/Olympics'
+								onClick='ClearFiltered()'
+							>
 								Go Back
 							</Button>
 						</div>
