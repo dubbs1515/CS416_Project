@@ -5,6 +5,8 @@ import {
 	GET_OLYMPICS_BY_TEAM,
 	CLEAR_OLYMPICS_FILTERED,
 	GET_TEAM_MEDAL_ROLLUP,
+	GET_TEAM_MEDAL_ROLLUP_BY_GENDER,
+	GET_TEAM_MEDAL_ROLLUP_BY_YEAR,
 } from '../types';
 
 const olympicReducer = (state, action) => {
@@ -43,6 +45,33 @@ const olympicReducer = (state, action) => {
 					(v) => d3.sum(v, (d) => parseInt(d.DidMedal)),
 					(d) => d.Team
 				),
+				loading: false,
+			};
+		case GET_TEAM_MEDAL_ROLLUP_BY_GENDER:
+			return {
+				...state,
+				teamMedalRollupByGender: d3.rollup(
+					(state.olympicsAll = state.olympicsAll.filter(
+						(obj) => (obj.Team = action.payload)
+					)),
+					(v) => d3.sum(v, (d) => parseInt(d.DidMedal)),
+					(d) => d.Team,
+					(d) => d.Sex
+				),
+				loading: false,
+			};
+		case GET_TEAM_MEDAL_ROLLUP_BY_YEAR:
+			return {
+				...state,
+				teamMedalRollupByYear: d3.rollup(
+					state.olympicsAll.filter(
+						(obj) => (obj.Team = action.payload)
+					),
+					(v) => d3.sum(v, (d) => parseInt(d.DidMedal)),
+					(d) => d.Team,
+					(d) => d.Year
+				),
+				loading: false,
 			};
 		default:
 			return state;

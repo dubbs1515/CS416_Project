@@ -8,6 +8,8 @@ import {
 	GET_OLYMPICS_BY_TEAM,
 	CLEAR_OLYMPICS_FILTERED,
 	GET_TEAM_MEDAL_ROLLUP,
+	GET_TEAM_MEDAL_ROLLUP_BY_GENDER,
+	GET_TEAM_MEDAL_ROLLUP_BY_YEAR,
 } from '../types';
 
 const OlympicState = (props) => {
@@ -18,13 +20,15 @@ const OlympicState = (props) => {
 		loading: true,
 		teamResults: null,
 		teamMedalRollup: null,
+		teamMedalRollupByGender: null,
+		teamMedalRollupByYear: null,
 	};
 
 	const [state, dispatch] = useReducer(OlympicReducer, initialState);
 
 	const getOlympicsAll = async () => {
 		try {
-			let data = await d3.csv('./data/OlympicData.csv');
+			let data = await d3.csv('./data/OlympicVisData.csv');
 			dispatch({ type: GET_OLYMPICS_ALL, payload: data });
 		} catch (error) {
 			console.log(error);
@@ -53,10 +57,29 @@ const OlympicState = (props) => {
 		if (state.olympicsAll == null) {
 			await getOlympicsAll();
 		}
-		state.loading = true;
-		console.log('hi there');
 		dispatch({
 			type: GET_TEAM_MEDAL_ROLLUP,
+		});
+	};
+
+	const getTeamMedalRollupByGender = async (team) => {
+		if (state.olympicsAll == null) {
+			await getOlympicsAll();
+		}
+		console.log('hi there');
+		dispatch({
+			type: GET_TEAM_MEDAL_ROLLUP_BY_GENDER,
+			payload: team,
+		});
+	};
+
+	const getTeamMedalRollupByYear = async (team) => {
+		if (state.olympicsAll == null) {
+			await getOlympicsAll();
+		}
+		dispatch({
+			type: GET_TEAM_MEDAL_ROLLUP_BY_YEAR,
+			payload: team,
 		});
 	};
 
@@ -72,10 +95,14 @@ const OlympicState = (props) => {
 				olympicsFiltered: state.olympicsFiltered,
 				teamResults: state.teamResults,
 				teamMedalRollup: state.teamMedalRollup,
+				teamMedalRollupByGender: state.teamMedalRollupByGender,
+				teamMedalRollupByYear: state.teamMedalRollupByYear,
+				getTeamMedalRollupByYear,
 				getOlympicsAll,
 				getOlympicsByYearRange,
 				getOlypmicsGroupedByTeams,
 				getTeamMedalRollup,
+				getTeamMedalRollupByGender,
 			}}
 		>
 			{props.children}

@@ -1,30 +1,33 @@
 import React from 'react';
 import { useD3 } from '../../hooks/useD3';
-import { useHistory } from 'react-router-dom';
 import * as d3 from 'd3';
+import { Redirect, Router, BrowserRouterProps } from 'react-router-dom';
 
 const width = 600;
 const height = 600;
 
-const BarChart = (props) => {
-	const history = useHistory();
+const GenderChart = (props) => {
 	let data = props.data;
-	console.log([...data.keys()]);
-	console.log([...data.values()]);
-	console.log(Math.max(...data.values()));
+	let teamName = [...data.keys()][0];
+	console.log(teamName);
+	let medalData = [...data.values()][0];
+	console.log(medalData);
+	// console.log([...data.keys()]);
+	// console.log([...data.values()]);
+	console.log(Math.max(...medalData.values()));
 	const ref = useD3(
 		(svg) => {
 			const margin = { top: 20, right: 10, bottom: 200, left: 30 };
 
 			const x = d3
 				.scaleBand()
-				.domain([...data.keys()])
+				.domain([...medalData.keys()])
 				.rangeRound([margin.left, width - margin.right])
 				.padding(0.2);
 
 			const y = d3
-				.scaleLinear([0, Math.max(...data.values())])
-				.domain([0, Math.max(...data.values())])
+				.scaleLinear([0, Math.max(...medalData.values())])
+				.domain([0, Math.max(...medalData.values())])
 				.range([height - margin.bottom, margin.top]);
 
 			const xAxis = (g) => {
@@ -37,7 +40,7 @@ const BarChart = (props) => {
 							.attr('y', 10)
 							.attr('fill', 'currentColor')
 							.attr('text-anchor', 'start')
-							.text(data.x)
+							.text(medalData.x)
 					);
 			};
 
@@ -54,7 +57,7 @@ const BarChart = (props) => {
 							.attr('y', 10)
 							.attr('fill', 'currentColor')
 							.attr('text-anchor', 'start')
-							.text(data.y)
+							.text(medalData.y)
 					);
 			};
 
@@ -70,11 +73,10 @@ const BarChart = (props) => {
 
 			svg.select('.plot-area')
 				.selectAll('.bar')
-				.data(data)
+				.data(medalData)
 
 				.join('rect')
 				.attr('class', 'bar')
-				.attr('id', (d, i) => [...data.keys()][i])
 				.attr('x', (d) => {
 					return x(d[0]);
 				})
@@ -85,15 +87,11 @@ const BarChart = (props) => {
 					return y(0) - y(d[1]);
 				})
 				.attr('fill', (d) => {
-					return d3.interpolateCool(d[1] / 1000.0);
+					return d3.interpolateBlues(d[1] / 500.0);
 				})
-				.attr('#id', data.x)
-				.on('click', (e) => {
-					console.log(e.target.id);
-					history.push(`/drillDown/${e.target.id}`);
-				});
+				.attr('#id', medalData.x);
 		},
-		[data.size]
+		[medalData.size]
 	);
 
 	return (
@@ -114,4 +112,4 @@ const BarChart = (props) => {
 	);
 };
 
-export default BarChart;
+export default GenderChart;
